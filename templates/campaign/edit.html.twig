@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<!--Import Google Icon Font-->
+	<link
+	href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<!--Import materialize.css-->
+	<link
+	type="text/css" rel="stylesheet" href="{{ asset('assets/css/materialize.min.css') }}" media="screen,projection"/>
+	<!--Simple MDE -->
+	<link
+	rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+	<!--Custom styles-->
+	<link type="text/css" rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" media="screen,projection"/>
+{% endblock %}
+
+{% block body %}
+    <h1>Edit Campaign</h1>
+
+    {{ include('campaign/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_campaign_index') }}">back to list</a>
+
+    {{ include('campaign/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block javascripts %}
+	<!--JavaScript at end of body for optimized loading-->
+	<script type="text/javascript" src="{{ asset('assets/js/materialize.min.js') }}"></script>
+	<!--Javascript Markdown editor-->
+	<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+	<script>
+		var simplemde = new SimpleMDE({element: document.getElementById("description")});
+	</script>
+	<!--Init & custom scripts-->
+	<script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
+{% endblock %}
