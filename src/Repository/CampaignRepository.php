@@ -21,6 +21,20 @@ class CampaignRepository extends ServiceEntityRepository
         parent::__construct($registry, Campaign::class);
     }
 
+    /**
+    * @return Campaign[] Returns an array of Campaign objects
+    */
+    public function findFiveOrderByUpdatedAtDesc(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.UpdatedAt', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
 //    /**
 //     * @return Campaign[] Returns an array of Campaign objects
 //     */

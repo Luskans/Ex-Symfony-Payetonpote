@@ -150,4 +150,16 @@ class Campaign
 
         return $this;
     }
+
+    public function getTotal(): int
+    {
+        $totalAmount = 0;
+        foreach ($this->getParticipants() as $participant) {
+            foreach ($participant->getPayments() as $payment) {
+                $totalAmount += $payment->getAmount(); 
+            }
+        }
+
+        return $totalAmount;
+    }
 }

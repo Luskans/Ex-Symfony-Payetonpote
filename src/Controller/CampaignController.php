@@ -50,20 +50,8 @@ class CampaignController extends AbstractController
     #[Route('/{id}', name: 'app_campaign_show', methods: ['GET'])]
     public function show(Campaign $campaign): Response
     {
-        $countPayments = 0;
-        foreach ($campaign->getParticipants() as $participant) {
-            foreach ($participant->getPayments() as $payment) {
-                $countPayments += $payment->getAmount(); 
-            }
-        }
-        $percent = round($countPayments / $campaign->getGoal() * 100);
-        $countParticipants = count($campaign->getParticipants());
-
         return $this->render('campaign/show.html.twig', [
             'campaign' => $campaign,
-            'countParticipants' => $countParticipants,
-            'countPayments' => $countPayments,
-            'percent' => $percent
         ]);
     }
 

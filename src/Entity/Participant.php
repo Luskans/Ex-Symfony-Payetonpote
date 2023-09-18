@@ -21,12 +21,15 @@ class Participant
     #[ORM\Column(length: 200)]
     private ?string $email = null;
 
-    #[ORM\OneToMany(mappedBy: 'participant', targetEntity: Payment::class, orphanRemoval: true, cascade: [ 'persist' ])]
+    #[ORM\OneToMany(mappedBy: 'participant', targetEntity: Payment::class, orphanRemoval: true)]
     private Collection $payments;
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campaign $campaign = null;
+
+    #[ORM\Column]
+    private ?bool $isHidden = false;
 
     public function __construct()
     {
@@ -100,6 +103,28 @@ class Participant
     public function setCampaign(?Campaign $campaign): static
     {
         $this->campaign = $campaign;
+
+        return $this;
+    }
+
+    public function getTotalPayment(): int
+    {
+        $totalPayment = 0;
+        foreach ($this->getPayments() as $payment) {
+            $totalPayment += $payment->getAmount(); 
+        }
+
+        return $totalPayment;
+    }
+
+    public function isIsHidden(): ?bool
+    {
+        return $this->isHidden;
+    }
+
+    public function setIsHidden(bool $isHidden): static
+    {
+        $this->isHidden = $isHidden;
 
         return $this;
     }

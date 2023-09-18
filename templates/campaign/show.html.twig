@@ -68,7 +68,7 @@
     <!-- Show progress -->
     <section class="progress-section">
         <div class="progress">
-            <div class="determinate" style="width: {{ percent }}%"><span>{{ percent }}% de l'objectif</span></div>
+            <div class="determinate" style="width: {{ (campaign.getTotal / campaign.goal * 100)|round }}%"><span>{{ (campaign.getTotal / campaign.goal * 100)|round }}% de l'objectif</span></div>
         </div>
     </section>
 
@@ -82,8 +82,13 @@
                             <input id="mount" type="number" class="validate">
                             <label for="mount">Votre participation</label>
                         </div>
-                        <a href="{{ path('app_campaign_payment', {'id': campaign.id}) }}" class="btn-large waves-effect waves-light pink lighten-1 col s12 l6">Participer</a>
-                        <div class="clearfix"></div>
+                        {% if campaign.getTotal >= campaign.getGoal %}
+                            <a href="{{ path('app_campaign_show', {'id': campaign.id}) }}" class="disabled btn-large waves-effect waves-light pink lighten-1 col s12 l6">Participer</a>
+                            <div class="clearfix"></div>
+                        {% else %}
+                            <a href="{{ path('app_campaign_payment', {'id': campaign.id}) }}" class="btn-large waves-effect waves-light pink lighten-1 col s12 l6">Participer</a>
+                            <div class="clearfix"></div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -97,7 +102,7 @@
                 <div class="col s12 m6 l3 offset-l3">
                     <div class="icon-block center">
                         <div class="btn-large btn-floating white"><i class="material-icons teal-text">person</i></div>
-                        <h3 class="center">{{ countParticipants }}</h3>
+                        <h3 class="center">{{ campaign.getParticipants|length }}</h3>
                         <p class="light">Participants</p>
                     </div>
                 </div>
@@ -105,7 +110,7 @@
                 <div class="col s12 m6 l3">
                     <div class="icon-block center">
                         <div class="btn-large btn-floating white"><i class="material-icons teal-text">redeem</i></div>
-                        <h3 class="center">{{ countPayments }}</h3>
+                        <h3 class="center">{{ campaign.getTotal }}</h3>
                         <p class="light">euros récoltés</p>
                     </div>
                 </div>
@@ -144,15 +149,27 @@
                         </thead>
 
                         <tbody>
-                            {% for participant in campaign.participants %}
+                            {# {% for participant in campaign.participants %}
                                 <tr>
                                     <td>{{ participant.email }}</td>
-                                    {% set totalPayment = 0 %}
-                                    {% for payment in participant.payments %}
-                                        {% set totalPayment = totalPayment + payment.amount %} 
-                                    {% endfor %}
-                                    <td>{{ totalPayment }}€</td>
+                                    <td>{{ participant.getTotalPayment }}€</td>
                                 </tr>
+                            {% endfor %} #}
+                            {% for participant in campaign.participants %}
+                                {% for payment in participant.payments %}
+                                    <tr>
+                                        {% if payment.Participant.isHidden %}
+                                            <td>Hidden</td>
+                                        {% else %}
+                                            <td>{{ payment.Participant.email }}</td>
+                                        {% endif %}
+                                        {% if payment.isHidden %}
+                                            <td>Hidden</td>
+                                        {% else %}
+                                            <td>{{ payment.amount }}€</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>

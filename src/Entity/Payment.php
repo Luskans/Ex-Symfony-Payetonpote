@@ -22,9 +22,12 @@ class Payment
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'payments')]
+    #[ORM\ManyToOne(inversedBy: 'payments', cascade: [ 'persist' ])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Participant $participant = null;
+
+    #[ORM\Column]
+    private ?bool $isHidden = false;
 
     public function getId(): ?int
     {
@@ -75,6 +78,18 @@ class Payment
     public function setParticipant(?Participant $participant): static
     {
         $this->participant = $participant;
+
+        return $this;
+    }
+
+    public function isIsHidden(): ?bool
+    {
+        return $this->isHidden;
+    }
+
+    public function setIsHidden(bool $isHidden): static
+    {
+        $this->isHidden = $isHidden;
 
         return $this;
     }
