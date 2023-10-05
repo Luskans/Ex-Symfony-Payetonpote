@@ -30,7 +30,8 @@ class PaymentController extends AbstractController
                 $payment->setCreatedAt(new DateTimeImmutable());
                 $payment->setUpdatedAt(new DateTimeImmutable());
                 $payment->getParticipant()->setCampaign($campaign);
-                $campaign->setUpdatedAt(new DateTimeImmutable());
+                $payment->getParticipant()->getCampaign()->setUpdatedAt(new DateTimeImmutable());
+                // $campaign->setUpdatedAt(new DateTimeImmutable());
                 // dd($payment);
                 $entityManager->persist($payment);
                 $entityManager->flush();

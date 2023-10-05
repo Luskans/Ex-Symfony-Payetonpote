@@ -33,7 +33,7 @@ class CampaignType extends AbstractType
             ->add('content', TextareaType::class, [
                 'attr' => [
                     'id' => 'description',
-                    'class' => 'materialize-textarea',
+                    // 'class' => 'materialize-textarea',
                     'placeholder' => 'Décrivez à vos amis pourquoi vous faites une campagne'
                 ]
             ])
